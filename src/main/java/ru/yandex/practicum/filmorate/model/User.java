@@ -10,15 +10,14 @@ import java.time.LocalDate;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Film {
+public class User {
 
     Long id;
     @NonNull
+    String email;
+    @NonNull
+    String login;
     String name;
     @NonNull
-    String description;
-    @NonNull
-    LocalDate releaseDate;
-    @NonNull
-    Integer duration;
+    LocalDate birthday;
 }
