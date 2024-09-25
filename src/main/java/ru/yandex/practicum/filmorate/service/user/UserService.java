@@ -92,14 +92,16 @@ public class UserService {
             log.error("Пользователь с id = {} не был найден", friendId);
             throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", friendId));
         }
-        if (user.getFriends().contains(friendId)) {
-            user.removeFriend(friendId);
-            friend.removeFriend(userId);
-        } else {
-            log.error("Пользователь с id = {} в друзьях у пользователя с id = {} не найден",
-                    friendId, userId);
-            throw new NotFoundException(String.format("Пользователь с id = %d в друзьях у пользователя с id = %d не " +
-                    "найден", friendId, userId));
+        if (user.getFriends() != null && friend.getFriends() != null) {
+            if (user.getFriends().contains(friendId)) {
+                user.removeFriend(friendId);
+                friend.removeFriend(userId);
+            } else {
+                log.error("Пользователь с id = {} в друзьях у пользователя с id = {} не найден",
+                        friendId, userId);
+                throw new NotFoundException(String.format("Пользователь с id = %d в друзьях у пользователя с id = %d не " +
+                        "найден", friendId, userId));
+            }
         }
     }
 
