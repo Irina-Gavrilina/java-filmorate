@@ -66,7 +66,7 @@ public class FilmController {
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable("id") long id,
                            @PathVariable("userId") long userId) {
-        log.info("Получен запрос на удаление лайка у фильма с id = {} от пользователя с id = {}",
+        log.info("Получен запрос DELETE на удаление лайка у фильма с id = {} от пользователя с id = {}",
                 id, userId);
         filmService.removeLike(id, userId);
     }
