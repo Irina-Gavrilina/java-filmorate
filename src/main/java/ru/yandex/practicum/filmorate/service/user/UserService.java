@@ -31,6 +31,10 @@ public class UserService {
         return userStorage.updateUser(newUser);
     }
 
+    public void removeUser(long userId) {
+        userStorage.removeUser(userId);
+    }
+
     public Optional<User> findUserById(long userId) {
         return userStorage.findUserById(userId);
     }
@@ -39,7 +43,6 @@ public class UserService {
         Optional<User> optUser = userStorage.findUserById(userId);
         if (optUser.isPresent()) {
             User user = optUser.get();
-            Set<Long> userFriends = user.getFriends();
             if (user.getFriends() == null) {
                 return new ArrayList<>();
             } else {

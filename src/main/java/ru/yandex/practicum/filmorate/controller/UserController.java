@@ -45,14 +45,20 @@ public class UserController {
         return userService.updateUser(newUser);
     }
 
-    @GetMapping("/{userId}")
-    public User getUserById(@PathVariable("userId") long userId) {
-        log.info("Поступил запрос GET на получение данных о пользователе с id = {}", userId);
-        Optional<User> optUser = userService.findUserById(userId);
+    @DeleteMapping("/{id}")
+    public void removeUser(@PathVariable("id") long id) {
+        log.info("Получен запрос DELETE на удаление пользователя с id = {}", id);
+        userService.removeUser(id);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable("id") long id) {
+        log.info("Поступил запрос GET на получение данных о пользователе с id = {}", id);
+        Optional<User> optUser = userService.findUserById(id);
         if (optUser.isPresent()) {
             return optUser.get();
         }
-        throw new NotFoundException(String.format("Пользователь с id = %d не найден", userId));
+        throw new NotFoundException(String.format("Пользователь с id = %d не найден", id));
     }
 
     @PutMapping("/{id}/friends/{friendId}")

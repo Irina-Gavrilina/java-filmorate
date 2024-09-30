@@ -62,6 +62,25 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
+    public void removeUser(long userId) {
+        if (users.containsKey(userId)) {
+            User user = users.get(userId);
+            users.remove(userId);
+            Set<Long> userFriends = user.getFriends();
+            if (userFriends != null) {
+                userFriends.stream()
+                        .map(this::getUserById)
+                        .forEach(currentUser -> {
+                            currentUser.removeFriend(userId);
+                        });
+            }
+        } else {
+            log.error("Пользователь с id = {} не был найден", userId);
+            throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", userId));
+        }
+    }
+
+    @Override
     public Optional<User> findUserById(long userId) {
         return users.values()
                 .stream()
@@ -71,11 +90,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User getUserById(long userId) {
-        if (users.containsKey(userId)) {
-            return users.get(userId);
-        }
-        log.error("Пользователь с id = {} не был найден", userId);
-        throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", userId));
+        return users.get(userId);
     }
 
     private long getNextId() {

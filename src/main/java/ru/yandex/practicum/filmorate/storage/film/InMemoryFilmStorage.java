@@ -6,10 +6,7 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -47,6 +44,16 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
         log.error("Фильм с id = {} не найден", newFilm.getId());
         throw new NotFoundException(String.format("Фильма с id = %d нет в базе", newFilm.getId()));
+    }
+
+    @Override
+    public void removeFilm(long filmId) {
+        if (films.containsKey(filmId)) {
+            films.remove(filmId);
+        } else {
+            log.error("Фильм с id = {} не был найден", filmId);
+            throw new NotFoundException(String.format("Фильма с id = %d нет в базе", filmId));
+        }
     }
 
     @Override

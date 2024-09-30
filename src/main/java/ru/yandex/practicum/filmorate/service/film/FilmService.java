@@ -35,6 +35,10 @@ public class FilmService {
         return filmStorage.updateFilm(newFilm);
     }
 
+    public void removeFilm(long filmId) {
+        filmStorage.removeFilm(filmId);
+    }
+
     public Optional<Film> getFilmById(long filmId) {
         return filmStorage.findFilmById(filmId);
     }
@@ -61,7 +65,6 @@ public class FilmService {
 
     public void removeLike(long filmId, long userId) {
         Film film;
-        User user;
         Optional<Film> optFilm = filmStorage.findFilmById(filmId);
         if (optFilm.isPresent()) {
             film = optFilm.get();
@@ -69,15 +72,8 @@ public class FilmService {
             log.error("Фильм с id = {} не был найден", filmId);
             throw new NotFoundException(String.format("Фильма с id = %d нет в базе", filmId));
         }
-        Optional<User> optUser = userStorage.findUserById(userId);
-        if (optUser.isPresent()) {
-            user = optUser.get();
-        } else {
-            log.error("Пользователь с id = {} не был найден", userId);
-            throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", userId));
-        }
-        if (film.getLikes().contains(user.getId())) {
-            film.removeLike(user.getId());
+        if (film.getLikes().contains(userId)) {
+            film.removeLike(userId);
         } else {
             log.error("Лайк пользователя с id = {} к фильму с id = {} не найден",
                     userId, filmId);

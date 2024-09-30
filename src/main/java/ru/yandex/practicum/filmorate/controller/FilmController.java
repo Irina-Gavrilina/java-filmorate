@@ -45,6 +45,12 @@ public class FilmController {
         return filmService.updateFilm(newFilm);
     }
 
+    @DeleteMapping("/{filmId}")
+    public void removeFilm(@PathVariable("filmId") long filmId) {
+        log.info("Получен запрос DELETE на удаление фильма с id = {}", filmId);
+        filmService.removeFilm(filmId);
+    }
+
     @GetMapping("/{filmId}")
     public Film getFilmById(@PathVariable("filmId") long filmId) {
         log.info("Поступил запрос GET на получение данных о фильме с id = {}", filmId);
