@@ -3,7 +3,7 @@ Template repository for Filmorate project.
 
 ### Схема базы данных проекта:
 
-![Схема базы данных проекта](./Scheme.png)
+![Схема базы данных проекта](/assets/db_scheme/filmorate_SQL_scheme.png)
 
 ### Описание схемы базы данных проекта:
 
@@ -79,9 +79,9 @@ VALUES ('mail@yandex.ru', 'user', 'Иванов', '1900-01-01');
 - Получение списка друзей пользователя с id = 1:
 ```sql
 SELECT u.login FROM users AS u
-WHERE u.user_id = (SELECT invitee_id FROM friendship
-WHERE inviter_id = 1
-AND status = 'confirmed');
+JOIN friendship f ON u.user_id = f.invitee_id 
+WHERE f.inviter_id = 1
+AND status = 'confirmed';
 ```
 - Удаление пользователя с id = 1:
 ```sql
@@ -91,8 +91,8 @@ WHERE user_id = 1;
 - Получение 10 самых популярных фильмов:
 ```sql
 SELECT f.name FROM films AS f
-WHERE f.film_id = (SELECT film_id FROM film_likes  
-GROUP BY film_id
-ORDER BY COUNT(user_id) DESC
-LIMIT 10);
+JOIN film_likes AS fl ON f.film_id = fl.film_id
+GROUP BY f.film_id, f.name
+ORDER BY COUNT(fl.user_id) DESC
+LIMIT 10;
 ```
