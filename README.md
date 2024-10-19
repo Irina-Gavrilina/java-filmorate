@@ -11,7 +11,7 @@ Template repository for Filmorate project.
 
 Таблица содержит информацию о каждом фильме и состоит из полей:
 
-- `film_id` - идентификатор фильма (**первичный ключ**)
+- `id` - идентификатор фильма (**первичный ключ**)
 - `name` - название фильма
 - `description` - описание фильма
 - `release_date` - дата релиза фильма
@@ -22,15 +22,14 @@ Template repository for Filmorate project.
 
 Таблица содержит информацию о возрастном ограничении для фильма и состоит из полей:
 
-- `rating_id` - идентификатор рейтинга (**первичный ключ**)
+- `id` - идентификатор рейтинга (**первичный ключ**)
 - `name` - название рейтинга
-- `description` - описание рейтинга
 
 #### `genres`
 
 Таблица содержит информацию о жанрах фильма и состоит из полей:
 
-- `genre_id` - идентификатор жанра (**первичный ключ**)
+- `id` - идентификатор жанра (**первичный ключ**)
 - `name` - название жанра
 
 #### `film-genres`
@@ -51,7 +50,7 @@ Template repository for Filmorate project.
 
 Таблица содержит информацию о каждом пользователе и состоит из полей:
 
-- `user_id` - идентификатор пользователя (**первичный ключ**)
+- `id` - идентификатор пользователя (**первичный ключ**)
 - `email` - электронная почта пользователя
 - `login` - логин пользователя
 - `name` - имя пользователя для отображения
@@ -63,7 +62,7 @@ Template repository for Filmorate project.
 
 - `inviter_id` - идентификатор пользователя, отправляющего запрос на добавление в друзья (**первичный ключ составной**)
 - `invitee_id` - идентификатор пользователя, получающего запрос на добавление в друзья (**первичный ключ составной**)
-- `status` - статус запроса (confirmed/not confirmed)
+- `status` - статус запроса (REQUESTED/DECLINED/APPROVED)
 
 ### Примеры запросов к базе данных для основных операций приложения:
 
@@ -79,20 +78,20 @@ VALUES ('mail@yandex.ru', 'user', 'Иванов', '1900-01-01');
 - Получение списка друзей пользователя с id = 1:
 ```sql
 SELECT u.login FROM users AS u
-JOIN friendship f ON u.user_id = f.invitee_id 
+JOIN friendship f ON u.id = f.invitee_id 
 WHERE f.inviter_id = 1
-AND status = 'confirmed';
+AND status = 'APPROVED';
 ```
 - Удаление пользователя с id = 1:
 ```sql
 DELETE FROM users
-WHERE user_id = 1;
+WHERE id = 1;
 ```
 - Получение 10 самых популярных фильмов:
 ```sql
 SELECT f.name FROM films AS f
-JOIN film_likes AS fl ON f.film_id = fl.film_id
-GROUP BY f.film_id, f.name
+JOIN film_likes AS fl ON f.id = fl.film_id
+GROUP BY f.id, f.name
 ORDER BY COUNT(fl.user_id) DESC
 LIMIT 10;
 ```

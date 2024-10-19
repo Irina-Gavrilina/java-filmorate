@@ -1,46 +1,41 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.user.UserService;
-import java.util.Collection;
+import ru.yandex.practicum.filmorate.dto.user.NewUserRequest;
+import ru.yandex.practicum.filmorate.dto.user.UpdateUserRequest;
+import ru.yandex.practicum.filmorate.dto.user.UserResponse;
+import ru.yandex.practicum.filmorate.service.UserService;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
+@AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping
-    public Collection<User> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         log.info("Поступил запрос GET на получение списка всех пользователей");
         return userService.getAllUsers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) {
+    public UserResponse createUser(@RequestBody NewUserRequest user) {
         log.info("Получен запрос POST на создание пользователя {}", user);
         return userService.createUser(user);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User newUser) {
+    public UserResponse updateUser(@RequestBody UpdateUserRequest newUser) {
         log.info("Получен запрос PUT на обновление пользователя {}", newUser);
         return userService.updateUser(newUser);
     }
@@ -52,13 +47,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") long id) {
+    public UserResponse getUserById(@PathVariable("id") long id) {
         log.info("Поступил запрос GET на получение данных о пользователе с id = {}", id);
-        Optional<User> optUser = userService.findUserById(id);
-        if (optUser.isPresent()) {
-            return optUser.get();
-        }
-        throw new NotFoundException(String.format("Пользователь с id = %d не найден", id));
+        return userService.getUserById(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
@@ -78,13 +69,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getAllFriends(@PathVariable("id") long id) {
+    public List<UserResponse> getAllFriends(@PathVariable("id") long id) {
         log.info("Поступил запрос GET на получение друзей пользователя {}", id);
         return userService.getAllFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getCommonFriends(@PathVariable("id") long id,
+    public List<UserResponse> getCommonFriends(@PathVariable("id") long id,
                                        @PathVariable("otherId") long otherId) {
         log.info("Поступил запрос GET на получение списка общих друзей пользователей c id ={} и id ={}",
                 id, otherId);
