@@ -19,9 +19,9 @@
 		<module name="IllegalTokenText">
 			<property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
 			<property name="format" value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
-			<property name="message" value="Conser using special escape sequence instead of octal value or Unicode escaped value."/>
+			<property name="message" value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
 		</module>
-		<!--		<module name="AvoStarImport"/>-->
+		<!--		<module name="AvoidStarImport"/>-->
 		<module name="OneTopLevelClass"/>
 		<module name="NoLineWrap"/>
 		<module name="EmptyBlock">
@@ -36,11 +36,11 @@
 
 		<module name="LeftCurly"/>
 		<module name="RightCurly">
-			<property name="" value="RightCurlySame"/>
+			<property name="id" value="RightCurlySame"/>
 			<property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_DO"/>
 		</module>
 		<module name="RightCurly">
-			<property name="" value="RightCurlyAlone"/>
+			<property name="id" value="RightCurlyAlone"/>
 			<property name="option" value="alone"/>
 			<property name="tokens" value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, STATIC_INIT, INSTANCE_INIT"/>
 		</module>
@@ -66,33 +66,33 @@
 			<property name="allowNoEmptyLineBetweenFields" value="true"/>
 		</module>
 		<module name="SeparatorWrap">
-			<property name="" value="SeparatorWrapDot"/>
+			<property name="id" value="SeparatorWrapDot"/>
 			<property name="option" value="nl"/>
 			<property name="tokens" value="DOT"/>
 		</module>
 		<module name="SeparatorWrap">
-			<property name="" value="SeparatorWrapComma"/>
+			<property name="id" value="SeparatorWrapComma"/>
 			<property name="option" value="EOL"/>
 			<property name="tokens" value="COMMA"/>
 		</module>
 		<module name="SeparatorWrap">
-			<property name="" value="SeparatorWrapEllipsis"/>
+			<property name="id" value="SeparatorWrapEllipsis"/>
 			<property name="option" value="EOL"/>
 			<property name="tokens" value="ELLIPSIS"/>
 		</module>
 		<module name="SeparatorWrap">
-			<property name="" value="SeparatorWrapArrayDeclarator"/>
+			<property name="id" value="SeparatorWrapArrayDeclarator"/>
 			<property name="option" value="EOL"/>
 			<property name="tokens" value="ARRAY_DECLARATOR"/>
 		</module>
 		<module name="SeparatorWrap">
-			<property name="" value="SeparatorWrapMethodRef"/>
+			<property name="id" value="SeparatorWrapMethodRef"/>
 			<property name="option" value="nl"/>
 			<property name="tokens" value="METHOD_REF"/>
 		</module>
 		<module name="PackageName">
 			<!--<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>-->
-			<message key="name.invalPattern" value="Package name ''{0}'' must match pattern ''{1}''."/>
+			<message key="name.invalidPattern" value="Package name ''{0}'' must match pattern ''{1}''."/>
 		</module>
 		<module name="TypeName">
 			<message key="name.invalidPattern" value="Type name ''{0}'' must match pattern ''{1}''."/>
