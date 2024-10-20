@@ -41,7 +41,7 @@ public class FilmService {
                 throw new ValidationException(String.format("Рейтинг с id = %s не найден", film.getMpa()));
             }
         }
-        if(CollectionUtils.isNotEmpty(film.getGenres())) {
+        if (CollectionUtils.isNotEmpty(film.getGenres())) {
             for (var genre : film.getGenres()) {
                 try {
                     genreService.getById(genre.getId());
