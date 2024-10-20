@@ -1,23 +1,23 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+
 import java.time.LocalDate;
 
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class UserResponse {
 
-    Long id;
-    @NonNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    long id;
     String email;
-    @NonNull
     String login;
     String name;
-    @NonNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     LocalDate birthday;
 }

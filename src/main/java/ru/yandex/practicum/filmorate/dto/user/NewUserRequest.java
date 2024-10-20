@@ -1,23 +1,16 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto.user;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 
 @Data
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class NewUserRequest {
 
-    Long id;
-    @NonNull
     String email;
-    @NonNull
     String login;
     String name;
-    @NonNull
     LocalDate birthday;
 }
