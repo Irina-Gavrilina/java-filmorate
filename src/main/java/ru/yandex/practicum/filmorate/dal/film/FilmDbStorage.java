@@ -17,8 +17,8 @@ import java.util.*;
 public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
 
     private static final String GET_ALL_QUERY = """
-            SELECT f.id AS film_id, f.name, f.description, f.release_date, f.duration, f.rating_id AS mpa_id, mpa.name AS mpa_name 
-            FROM films AS f 
+            SELECT f.id AS film_id, f.name, f.description, f.release_date, f.duration, f.rating_id AS mpa_id, mpa.name AS mpa_name
+            FROM films AS f
             LEFT JOIN mpa_rating AS mpa ON mpa.id = f.rating_id
             """;
 
