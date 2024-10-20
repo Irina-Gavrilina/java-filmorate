@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.film.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.dto.genre.GenreRequest;
@@ -26,7 +27,9 @@ public class FilmService {
     private MpaRatingService mpaRatingService;
 
     public List<FilmResponse> getAllFilms() {
-        return filmStorage.getAllFilms().stream().map(FilmMapper::mapToFilmResponse).toList();
+        return filmStorage.getAllFilms().stream()
+                .map(FilmMapper::mapToFilmResponse)
+                .toList();
     }
 
     public FilmResponse addFilm(NewFilmRequest film) {
@@ -38,7 +41,7 @@ public class FilmService {
                 throw new ValidationException(String.format("Рейтинг с id = %s не найден", film.getMpa()));
             }
         }
-        if (film.getGenres() != null) {
+        if(CollectionUtils.isNotEmpty(film.getGenres())) {
             for (var genre : film.getGenres()) {
                 try {
                     genreService.getById(genre.getId());
@@ -50,7 +53,7 @@ public class FilmService {
 
         FilmResponse filmResponse = FilmMapper.mapToFilmResponse(filmStorage.addFilm(FilmMapper.mapToFilm(film)));
 
-        if (film.getGenres() != null) {
+        if (CollectionUtils.isNotEmpty(film.getGenres())) {
             Set<Integer> createdGenreIds = new HashSet<>();
             for (var genre : film.getGenres()) {
                 if (!createdGenreIds.contains(genre.getId())) {
@@ -59,7 +62,9 @@ public class FilmService {
                 }
             }
 
-            filmResponse.setGenres(film.getGenres().stream().map(GenreMapper::mapToGenreResponse).toList());
+            filmResponse.setGenres(film.getGenres().stream()
+                    .map(GenreMapper::mapToGenreResponse)
+                    .toList());
         }
 
         return filmResponse;
@@ -71,7 +76,9 @@ public class FilmService {
         validateFilm(FilmMapper.mapToFilm(request));
         filmStorage.removeGenreFromFilm(filmId);
         if (request.hasGenres()) {
-            List<Integer> newGenreIds = request.getGenres().stream().map(GenreRequest::getId).toList();
+            List<Integer> newGenreIds = request.getGenres().stream()
+                    .map(GenreRequest::getId)
+                    .toList();
             for (Integer newGenreId : newGenreIds) {
                 filmStorage.addGenreToFilm(filmId, newGenreId);
             }
@@ -86,7 +93,8 @@ public class FilmService {
     }
 
     public FilmResponse findFilmById(long filmId) {
-        return filmStorage.findFilmById(filmId).map(FilmMapper::mapToFilmResponse)
+        return filmStorage.findFilmById(filmId)
+                .map(FilmMapper::mapToFilmResponse)
                 .orElseThrow(() -> new NotFoundException(String.format("Фильм с id = %d не найден", filmId)));
     }
 

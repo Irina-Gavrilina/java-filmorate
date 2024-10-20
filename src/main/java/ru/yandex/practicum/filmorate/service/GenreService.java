@@ -17,11 +17,14 @@ public class GenreService {
     private GenreStorage genreStorage;
 
     public List<GenreResponse> findAll() {
-        return genreStorage.findAll().stream().map(GenreMapper::mapToGenreResponse).toList();
+        return genreStorage.findAll().stream()
+                .map(GenreMapper::mapToGenreResponse)
+                .toList();
     }
 
     public GenreResponse getById(int id) {
-        return genreStorage.getById(id).map(GenreMapper::mapToGenreResponse)
+        return genreStorage.getById(id)
+                .map(GenreMapper::mapToGenreResponse)
                 .orElseThrow(() -> new NotFoundException(String.format("Жанр с id = %d не найден", id)));
     }
 }

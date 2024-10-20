@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import ru.yandex.practicum.filmorate.dto.film.FilmResponse;
 import ru.yandex.practicum.filmorate.dto.film.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.film.UpdateFilmRequest;
@@ -21,8 +22,10 @@ public class FilmMapper {
         if (request.getMpa() != null) {
             film.setMpa(MpaRatingMapper.mapToMpaRating(request.getMpa()));
         }
-        if (request.getGenres() != null) {
-            film.setGenres(request.getGenres().stream().map(GenreMapper::mapToGenre).toList());
+        if (CollectionUtils.isNotEmpty(request.getGenres())) {
+            film.setGenres(request.getGenres().stream()
+                    .map(GenreMapper::mapToGenre)
+                    .toList());
         }
         return film;
     }
@@ -37,8 +40,10 @@ public class FilmMapper {
         if (request.getMpa() != null) {
             film.setMpa(MpaRatingMapper.mapToMpaRating(request.getMpa()));
         }
-        if (request.getGenres() != null) {
-            film.setGenres(request.getGenres().stream().map(GenreMapper::mapToGenre).toList());
+        if (CollectionUtils.isNotEmpty(request.getGenres())) {
+            film.setGenres(request.getGenres().stream()
+                    .map(GenreMapper::mapToGenre)
+                    .toList());
         }
         return film;
     }
@@ -54,8 +59,10 @@ public class FilmMapper {
         if (film.getMpa() != null) {
             filmResponse.setMpa(MpaRatingMapper.mapToMpaRatingResponse(film.getMpa()));
         }
-        if (film.getGenres() != null) {
-            filmResponse.setGenres(film.getGenres().stream().map(GenreMapper::mapToGenreResponse).toList());
+        if (CollectionUtils.isNotEmpty(film.getGenres())) {
+            filmResponse.setGenres(film.getGenres().stream()
+                    .map(GenreMapper::mapToGenreResponse)
+                    .toList());
         }
         return filmResponse;
     }
@@ -86,7 +93,9 @@ public class FilmMapper {
                 film.setGenres(new ArrayList<>());
             }
 
-            film.setGenres(request.getGenres().stream().map(GenreMapper::mapToGenre).toList());
+            film.setGenres(request.getGenres().stream()
+                    .map(GenreMapper::mapToGenre)
+                    .toList());
         } else {
             film.setGenres(null);
         }

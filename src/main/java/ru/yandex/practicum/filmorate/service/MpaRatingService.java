@@ -17,11 +17,14 @@ public class MpaRatingService {
     private MpaRatingStorage mpaRatingStorage;
 
     public List<MpaRatingResponse> findAll() {
-        return mpaRatingStorage.findAll().stream().map(MpaRatingMapper::mapToMpaRatingResponse).toList();
+        return mpaRatingStorage.findAll().stream()
+                .map(MpaRatingMapper::mapToMpaRatingResponse)
+                .toList();
     }
 
     public MpaRatingResponse getById(int id) {
-        return mpaRatingStorage.getById(id).map(MpaRatingMapper::mapToMpaRatingResponse)
+        return mpaRatingStorage.getById(id)
+                .map(MpaRatingMapper::mapToMpaRatingResponse)
                 .orElseThrow(() -> new NotFoundException(String.format("Рейтинг с id = %d не найден", id)));
     }
 }

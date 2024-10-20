@@ -22,7 +22,9 @@ public class UserService {
     private final UserStorage userStorage;
 
     public List<UserResponse> getAllUsers() {
-        return userStorage.getAllUsers().stream().map(UserMapper::mapToUserResponse).toList();
+        return userStorage.getAllUsers().stream()
+                .map(UserMapper::mapToUserResponse)
+                .toList();
     }
 
     public UserResponse createUser(NewUserRequest request) {
@@ -67,7 +69,8 @@ public class UserService {
             throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", userId));
         }
         return userStorage.getAllFriends(userId).stream()
-                .map(UserMapper::mapToUserResponse).toList();
+                .map(UserMapper::mapToUserResponse)
+                .toList();
     }
 
     public void addFriend(long inviterId, long inviteeId) {
@@ -110,7 +113,8 @@ public class UserService {
             throw new NotFoundException(String.format("Пользователя с id = %d нет в базе", secondUserId));
         }
         return userStorage.getCommonFriends(firstUserId, secondUserId).stream()
-                .map(UserMapper::mapToUserResponse).toList();
+                .map(UserMapper::mapToUserResponse)
+                .toList();
     }
 
     private void validateUser(User user) {
