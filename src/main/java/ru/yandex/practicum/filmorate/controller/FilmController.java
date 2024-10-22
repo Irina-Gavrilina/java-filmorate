@@ -1,48 +1,43 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.film.FilmService;
-import java.util.Collection;
+import ru.yandex.practicum.filmorate.dto.film.FilmResponse;
+import ru.yandex.practicum.filmorate.dto.film.NewFilmRequest;
+import ru.yandex.practicum.filmorate.dto.film.UpdateFilmRequest;
+import ru.yandex.practicum.filmorate.service.FilmService;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
+@AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequestMapping("/films")
 public class FilmController {
 
     private final FilmService filmService;
 
-    @Autowired
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
-
     @GetMapping
-    public Collection<Film> getAllFilms() {
+    public List<FilmResponse> getAllFilms() {
         log.info("Поступил запрос GET на получение списка всех фильмов");
         return filmService.getAllFilms();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Film addFilm(@RequestBody Film film) {
+    public FilmResponse addFilm(@RequestBody NewFilmRequest film) {
         log.info("Получен запрос POST на создание фильма {}", film);
         return filmService.addFilm(film);
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film newFilm) {
-        log.info("Получен запрос PUT на обновление фильма {}", newFilm);
-        return filmService.updateFilm(newFilm);
+    public FilmResponse updateFilm(@RequestBody UpdateFilmRequest request) {
+        log.info("Получен запрос PUT на обновление фильма {}", request);
+        return filmService.updateFilm(request.getId(), request);
     }
 
     @DeleteMapping("/{filmId}")
@@ -52,13 +47,9 @@ public class FilmController {
     }
 
     @GetMapping("/{filmId}")
-    public Film getFilmById(@PathVariable("filmId") long filmId) {
+    public FilmResponse getFilmById(@PathVariable("filmId") long filmId) {
         log.info("Поступил запрос GET на получение данных о фильме с id = {}", filmId);
-        Optional<Film> optFilm = filmService.getFilmById(filmId);
-        if (optFilm.isPresent()) {
-            return optFilm.get();
-        }
-        throw new NotFoundException(String.format("Фильм с id = %d не найден", filmId));
+        return filmService.findFilmById(filmId);
     }
 
     @PutMapping("/{id}/like/{userId}")
@@ -78,7 +69,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
+    public List<FilmResponse> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
         log.info("Поступил запрос GET на получение {} наиболее популярных фильмов по количеству лайков", count);
         return filmService.getPopularFilms(count);
     }

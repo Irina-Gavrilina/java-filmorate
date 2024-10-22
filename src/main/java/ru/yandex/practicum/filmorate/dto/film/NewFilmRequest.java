@@ -1,19 +1,20 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto.film;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import ru.yandex.practicum.filmorate.dto.genre.GenreRequest;
+import ru.yandex.practicum.filmorate.dto.mpa.MpaRequest;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Film {
+public class NewFilmRequest {
 
-    Long id;
     @NonNull
     String name;
     @NonNull
@@ -22,6 +23,6 @@ public class Film {
     LocalDate releaseDate;
     @NonNull
     Integer duration;
-    MpaRating mpa;
-    List<Genre> genres;
+    MpaRequest mpa;
+    List<GenreRequest> genres;
 }
